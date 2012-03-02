@@ -1,0 +1,18 @@
+Prerequisites:
+
+* You must have the dependency manager Maven 2 installed.
+* To build in eclipse you must have m2eclipse plugin installed.
+
+Instructions:
+
+To build at the command prompt, in the root of this project type: mvn install
+To build in Eclipse, select Import > Existing Maven Projects 
+
+If you are a doing a web server callback flow, read this first:
+
+http://wiki.developerforce.com/page/Digging_Deeper_into_OAuth_2.0_on_Force.com
+
+If you are doing a username and password flow, read this first:
+
+https://login.salesforce.com/help/doc/en/remoteaccess_oauth_username_password_flow.htm
+
