@@ -5,10 +5,7 @@ import java.util.logging.Logger;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.servlet.ServletMapping;
-import org.eclipse.jetty.webapp.WebAppContext;
 
 /**
  * This class contains an embedded web container that
@@ -24,11 +21,8 @@ import org.eclipse.jetty.webapp.WebAppContext;
  * @author gwester
  */
 public class HerokuApp {
-	private static final String WEB_ROOT_PATH = "src/main/webapp/";
-	private static final String WEB_XML_PATH = WEB_ROOT_PATH + "/WEB-INF/web.xml";
 	
 	private static final Logger logger = Logger.getLogger(HerokuApp.class.getName());
-
 	
 	public static void main(String[] args) throws Exception {
 		//set port
@@ -55,8 +49,12 @@ public class HerokuApp {
 		Server server = new Server(Integer.valueOf(port));
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
+        
+        //define our servlet endpoint
         server.setHandler(context);
         context.addServlet(new ServletHolder(new CallbackServlet()),"/*");
+        
+        //start the server
         server.start();
         server.join();  
 	}

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.http.HttpStatus;
@@ -89,7 +90,7 @@ public class CallbackServlet extends HttpServlet {
 				String cookieValue = SessionService.getInstance().addSessionAndGetNewCookie(authInfo);
 				response.addCookie(new Cookie("sid", cookieValue));
 				
-				response.getWriter().write(authInfo.toString());
+				response.getWriter().write(getUserInformation(authInfo).toString());
 			}
 			else if(action != null && (!action.isEmpty())) {
 				//code whatever your webapp is supposed to do here
@@ -106,7 +107,7 @@ public class CallbackServlet extends HttpServlet {
 					} 
 					else { //authorized
 						OAuthResponse authInfo = SessionService.getInstance().getAuthorizationInfo(cookieValue);
-						response.getWriter().write(authInfo.toString());
+						response.getWriter().write(getUserInformation(authInfo).toString());
 					}
 				}
 			}
@@ -149,5 +150,18 @@ public class CallbackServlet extends HttpServlet {
 		//send the request
 		httpClient.executeMethod(method);
 		return method;
+	}
+	
+	private UserInformation getUserInformation(OAuthResponse authInfo) throws HttpException, IOException {
+		final GetMethod method = new GetMethod(authInfo.getId());
+		method.addRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		
+
+		int statusCode = httpClient.executeMethod(method);
+		String responseBody = IOUtils.toString(method.getResponseBodyAsStream());
+		if(statusCode >= HttpStatus.BAD_REQUEST_400) {
+			logger.log(Level.SEVERE, "Could not get user information: " + responseBody);
+		}
+		return gson.fromJson(responseBody, UserInformation.class);
 	}
 }
