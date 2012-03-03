@@ -16,3 +16,6 @@ If you are doing a username and password flow, read this first:
 
 https://login.salesforce.com/help/doc/en/remoteaccess_oauth_username_password_flow.htm
 
+If you are looking to refresh an expired session:
+
+https://login.salesforce.com/help/doc/en/remoteaccess_oauth_refresh_token_flow.htm#request_access_token
