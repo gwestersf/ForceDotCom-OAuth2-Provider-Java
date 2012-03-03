@@ -10,11 +10,32 @@ package com.force.api.oauth2;
  */
 public class OAuthCallbackGrantRequest extends OAuthRequest {
 	
+	private final String code;
+	private final String redirect_uri;
+	
 	private final String grant_type = "authorization_code";
+	
+	public OAuthCallbackGrantRequest(String client_id, String client_secret, String code, String redirect_uri) {
+		super();
+		super.setConsumerKey(client_id);
+		super.setConsumerSecret(client_secret);
+		this.code = code;
+		this.redirect_uri = redirect_uri;
+	}
 
 	@Override
 	public String getGrantType() {
 		return grant_type;
 	}
 
+	/**
+	 * @return The code you need to pass back to Salesforce to get an access token.
+	 */
+	public String getCode() {
+		return code;
+	}
+
+	public String getRedirectUri() {
+		return redirect_uri;
+	}
 }

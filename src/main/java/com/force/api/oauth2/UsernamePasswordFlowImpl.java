@@ -49,32 +49,29 @@ public class UsernamePasswordFlowImpl implements UsernamePasswordFlow {
 	@Override
 	public OAuthResponse getSession(String username, String password) throws HttpException, IOException {
 		//set up the request object
-		final OAuthPasswordGrantRequest request = new OAuthPasswordGrantRequest();
-		request.setConsumerKey(consumerKey);
-		request.setConsumerSecret(consumerSecret);
-		request.setUsername(username);
-		request.setPassword(password);
+		final OAuthPasswordGrantRequest requestInfo = 
+			new OAuthPasswordGrantRequest(consumerKey, consumerSecret, username, password);
 		
 		//serialize the request, deserialize the response
-		String responseBody = sendOAuthRequest(request);
+		String responseBody = sendOAuthTokenRequest(requestInfo);
 		return gson.fromJson(responseBody, OAuthResponse.class);
 	}
 	
 	/**
 	 * 
-	 * @param requestBody
+	 * @param requestInfo
 	 * @return responseBody
 	 * @throws HttpException
 	 * @throws IOException
 	 */
-	private String sendOAuthRequest(OAuthPasswordGrantRequest requestBody) throws HttpException, IOException {
+	private String sendOAuthTokenRequest(OAuthPasswordGrantRequest requestInfo) throws HttpException, IOException {
 		final PostMethod method = new PostMethod(path);
 		method.addRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		method.setParameter("grant_type", requestBody.getGrantType());
-		method.setParameter("client_id", requestBody.getConsumerKey());
-		method.setParameter("client_secret", requestBody.getConsumerSecret());
-		method.setParameter("username", requestBody.getUsername());
-		method.setParameter("password", requestBody.getPassword());
+		method.setParameter("grant_type", requestInfo.getGrantType());
+		method.setParameter("client_id", requestInfo.getConsumerKey());
+		method.setParameter("client_secret", requestInfo.getConsumerSecret());
+		method.setParameter("username", requestInfo.getUsername());
+		method.setParameter("password", requestInfo.getPassword());
 		
 		//send the request
 		int statusCode = httpClient.executeMethod(method);

@@ -26,5 +26,12 @@ You can run the callback flow from the class HerokuApp.java, which contains a ma
 
 http://devcenter.heroku.com/articles/java
 
-The callback servlet is implemented in CallbackServlet.java.  This servlet accepts an HTTP POST initiated by Salesforce (a callout essentially) that tells your server what the session information is.  For illustrative purposes, the next HTTP get to the server will display that information.  You should not implement HTTP GET in a production web application with OAuth2. 
+The callback servlet is implemented in CallbackServlet.java.  Here is the flow:
+
+1) Client makes an HTTP GET request to CallbackServlet 
+2) Callback servlet redirects client request to Salesforce
+3) Client enters credentials
+4) Salesforce returns a response with a redirect to CallbackServlet, plus a parameter on the URL named 'code'
+5) CallbackServlet sees the authorization code, then calls out to Salesforce for a session ID
+6) CallbackServlet responds some data about the user
 

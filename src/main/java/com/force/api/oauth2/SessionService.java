@@ -1,8 +1,9 @@
 package com.force.api.oauth2;
 
-import java.util.Queue;
+import java.util.Map;
+import java.util.UUID;
 
-import com.google.common.collect.Queues;
+import com.google.common.collect.Maps;
 
 /**
  * This class holds recent sessions.
@@ -11,12 +12,12 @@ import com.google.common.collect.Queues;
  */
 public class SessionService {
 
-	private Queue<OAuthResponse> sessions;
+	private Map<String, OAuthResponse> cookieToAuthorizationInfo;
 	
 	private static SessionService SINGLETON;
 	
 	private SessionService() {
-		sessions = Queues.<OAuthResponse>newConcurrentLinkedQueue();
+		cookieToAuthorizationInfo = Maps.<String, OAuthResponse>newHashMap();
 	}
 	
 	public static SessionService getInstance() {
@@ -31,11 +32,18 @@ public class SessionService {
 		return SINGLETON;
 	}
 	
-	public void addSession(OAuthResponse sessionInfo) {
-		sessions.add(sessionInfo);
+	/**
+	 * 
+	 * @param sessionInfo
+	 * @return a UUID
+	 */
+	public String addSessionAndGetNewCookie(OAuthResponse sessionInfo) {
+		String cookieValue = UUID.randomUUID().toString();
+		cookieToAuthorizationInfo.put(cookieValue, sessionInfo);
+		return cookieValue;
 	}
 	
-	public OAuthResponse getLastAddedSession() {
-		return sessions.peek();
+	public OAuthResponse getAuthorizationInfo(String cookie) {
+		return cookieToAuthorizationInfo.get(cookie);
 	}
 }

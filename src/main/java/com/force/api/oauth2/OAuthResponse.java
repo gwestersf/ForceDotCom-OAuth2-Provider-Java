@@ -1,6 +1,7 @@
 package com.force.api.oauth2;
 
 import java.net.MalformedURLException;
+import java.util.Date;
 
 /**
  * These are the fields Salesforce returns with an OAuth2 response.
@@ -13,6 +14,7 @@ import java.net.MalformedURLException;
 public class OAuthResponse {
 	private String id;
 	private String access_token;
+	private String refresh_token;
 	private String instance_url;
 	private String issued_at;
 	private String signature;
@@ -27,18 +29,65 @@ public class OAuthResponse {
 		return new java.net.URL(id);
 	}
 	
+	/**
+	 * This is a link to information about your user in Salesforce.
+	 * @return
+	 */
 	public String getId() {
 		return id;
 	}
-	public String getAccess_token() {
+	
+	/**
+	 * @return An access token that acts as a Salesforce session ID.
+	 */
+	public String getAccessToken() {
 		return access_token;
 	}
-	public String getInstance_url() {
+	
+	/**
+	 * See also: http://wiki.developerforce.com/page/Digging_Deeper_into_OAuth_2.0_on_Force.com#Token_Refresh
+	 * Refresh token may be null on certain OAuth2 flows, like username and password flow.
+	 * 
+	 * @return A long-lived token that may be used to obtain a fresh access token on expiry of the access token in this response.
+	 */
+	public String getRefreshToken() {
+		return refresh_token;
+	}
+	
+	/**
+	 * @return The instance that is aware of your session.
+	 */
+	public String getInstanceUrl() {
 		return instance_url;
 	}
-	public String getIssued_at() {
+	
+	/**
+	 * @return The number of seconds since the Unix epoch (00:00:00 UTC on 1 January 1970).
+	 */
+	public String getIssuedAt() {
 		return issued_at;
 	}
+	
+	/**
+	 * @return The time of token issue
+	 */
+	public long getIssuedAtMilliseconds() {
+		return Long.valueOf(getIssuedAt()).longValue();
+	}
+	
+	/**
+	 * @return The time of token issue
+	 */
+	public Date getIssuedAtDate() {
+		return new Date(getIssuedAtMilliseconds());
+	}
+	
+	/**
+	 * Signature signed with the consumer's private key containing the concatenated ID and issued_at. 
+	 * This can be used to verify the identity URL was not modified since it was sent by the server.
+	 * 
+	 * @return Base64-encoded HMAC-SHA256 signature 
+	 */
 	public String getSignature() {
 		return signature;
 	}
@@ -51,16 +100,19 @@ public class OAuthResponse {
 	protected void setId(String id) {
 		this.id = id;
 	}
-	protected void setAccess_token(String access_token) {
+	protected void setAccessToken(String access_token) {
 		this.access_token = access_token;
 	}
-	protected void setInstance_url(String instance_url) {
+	protected void setInstanceUrl(String instance_url) {
 		this.instance_url = instance_url;
 	}
-	protected void setIssued_at(String issued_at) {
+	protected void setIssuedAt(String issued_at) {
 		this.issued_at = issued_at;
 	}
 	protected void setSignature(String signature) {
 		this.signature = signature;
+	}
+	protected void setRefreshToken(String refresh_token) {
+		this.refresh_token = refresh_token;
 	}
 }
