@@ -34,9 +34,12 @@ public class CallbackServlet extends HttpServlet {
 	private final String URL_PARAM_CODE = "code";
 	private final String URL_PARAM_ACTION = "action";
 	
-	private final String HOSTNAME = System.getenv("HOSTNAME");
+	private final String HOSTNAME = System.getenv("HOSTNAME"); 
 	private final String CLIENT_ID = System.getenv("CLIENT_ID");
 	private final String CLIENT_SECRET = System.getenv("CLIENT_SECRET");
+	
+	private final String HOSTNAME_URL = "https://" + HOSTNAME + "/";
+	private final String USERINFO_URL = HOSTNAME_URL + "/?" + URL_PARAM_ACTION + "=showUserInfo";
 	
 	private final String AUTHORIZATION_ENDPOINT = 
 			"https://login.salesforce.com/services/oauth2/authorize?" +
@@ -45,11 +48,11 @@ public class CallbackServlet extends HttpServlet {
 			//Your application's client identifier (consumer key in Remote Access Detail).
 			"&client_id=" + CLIENT_ID +
 			//This must match your application's configured callback URL in Salesforce > Setup > Remote Access
-			"&redirect_uri=" + HOSTNAME;
+			"&redirect_uri=" + HOSTNAME_URL;
 	
 	private final String TOKEN_ENDPOINT = "https://login.salesforce.com/services/oauth2/token";
 	
-	private final String USERINFO_URL = "https://" + HOSTNAME + "/?" + URL_PARAM_ACTION + "=showUserInfo";
+
 	
 	private static final long serialVersionUID = 1L;
 	
