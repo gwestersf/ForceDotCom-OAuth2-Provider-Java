@@ -39,7 +39,6 @@ public class CallbackServlet extends HttpServlet {
 	private final String CLIENT_SECRET = System.getenv("CLIENT_SECRET");
 	
 	private final String HOSTNAME_URL = "https://" + HOSTNAME + "/";
-	private final String USERINFO_URL = HOSTNAME_URL + "/?" + URL_PARAM_ACTION + "=showUserInfo";
 	
 	private final String AUTHORIZATION_ENDPOINT = 
 			"https://login.salesforce.com/services/oauth2/authorize?" +
@@ -69,7 +68,7 @@ public class CallbackServlet extends HttpServlet {
 			String action = request.getParameter(URL_PARAM_ACTION);
 			
 			if(code != null && (!code.isEmpty())) {
-				OAuthCallbackGrantRequest requestInfo = new OAuthCallbackGrantRequest(CLIENT_ID, CLIENT_SECRET, code, USERINFO_URL);
+				OAuthCallbackGrantRequest requestInfo = new OAuthCallbackGrantRequest(CLIENT_ID, CLIENT_SECRET, code, HOSTNAME_URL);
 				
 				PostMethod methodExcecutedOnSalesforce = sendOAuthTokenRequest(requestInfo);
 				int statusCode = methodExcecutedOnSalesforce.getStatusCode();
