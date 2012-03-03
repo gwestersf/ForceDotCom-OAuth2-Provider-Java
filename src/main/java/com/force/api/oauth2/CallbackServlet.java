@@ -132,7 +132,7 @@ public class CallbackServlet extends HttpServlet {
 	
 	
 	/**
-	 * 
+	 * This makes an outbound HTTP request to Salesforce's auth endpoint to get a real session ID.
 	 * @param requestInfo
 	 * @return responseBody
 	 * @throws HttpException
@@ -152,10 +152,19 @@ public class CallbackServlet extends HttpServlet {
 		return method;
 	}
 	
+	/**
+	 * This makes an outbound HTTP request to Salesforce's oauth servlet, 
+	 * with a valid user session ID, to get in depth info about a user.
+	 * 
+	 * @param authInfo
+	 * @return
+	 * @throws HttpException
+	 * @throws IOException
+	 */
 	private UserInformation getUserInformation(OAuthResponse authInfo) throws HttpException, IOException {
 		final GetMethod method = new GetMethod(authInfo.getId());
 		method.addRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		
+		method.setRequestHeader("Authorization", "OAuth " + authInfo.getAccessToken());
 
 		int statusCode = httpClient.executeMethod(method);
 		String responseBody = IOUtils.toString(method.getResponseBodyAsStream());
