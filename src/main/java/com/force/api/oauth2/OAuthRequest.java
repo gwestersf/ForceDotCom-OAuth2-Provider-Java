@@ -1,5 +1,7 @@
 package com.force.api.oauth2;
 
+import org.apache.commons.httpclient.NameValuePair;
+
 /**
  * 
  * @author gwester
@@ -37,5 +39,4 @@ public abstract class OAuthRequest {
 	 * @return
 	 */
 	public abstract String getGrantType();
-	
 }

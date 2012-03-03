@@ -37,7 +37,7 @@ public class UsernamePasswordFlow {
 	 * @param consumerSecret this is sometimes called 'client secret'
 	 */
 	public UsernamePasswordFlow(String hostname, String consumerKey, String consumerSecret) {
-		this.path = "https://" + hostname + "/services/oauth2/authorize";
+		this.path = "https://" + hostname + "/services/oauth2/token";
 		this.consumerKey = consumerKey;
 		this.consumerSecret = consumerSecret;
 		
@@ -55,8 +55,7 @@ public class UsernamePasswordFlow {
 		request.setPassword(password);
 		
 		//serialize the request, deserialize the response
-		String requestBody = gson.toJson(request);
-		String responseBody = sendOAuthRequest(requestBody);
+		String responseBody = sendOAuthRequest(request);
 		return gson.fromJson(responseBody, OAuthResponse.class);
 	}
 	
@@ -67,11 +66,14 @@ public class UsernamePasswordFlow {
 	 * @throws HttpException
 	 * @throws IOException
 	 */
-	@SuppressWarnings("deprecation")
-	private String sendOAuthRequest(String requestBody) throws HttpException, IOException {
+	private String sendOAuthRequest(OAuthPasswordGrantRequest requestBody) throws HttpException, IOException {
 		final PostMethod method = new PostMethod(path);
-		method.addRequestHeader("Content-Type", "application/json");
-		method.setRequestBody(requestBody);
+		method.addRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		method.setParameter("grant_type", requestBody.getGrantType());
+		method.setParameter("client_id", requestBody.getConsumerKey());
+		method.setParameter("client_secret", requestBody.getConsumerSecret());
+		method.setParameter("username", requestBody.getUsername());
+		method.setParameter("password", requestBody.getPassword());
 		
 		//send the request
 		int statusCode = httpClient.executeMethod(method);
