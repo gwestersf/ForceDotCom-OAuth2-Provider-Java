@@ -33,10 +33,11 @@ The callback servlet is implemented in CallbackServlet.java.  Here is the flow:
 3) Client enters credentials
 4) Salesforce returns a response with a redirect to CallbackServlet, plus a parameter on the URL named 'code'
 5) CallbackServlet sees the authorization code, then calls out to Salesforce for a session ID
-6) CallbackServlet responds some data about the user
+6) CallbackServlet responds some with data about the user, like recent chatter status.
 
 If you are running this app on Heroku, be sure to run these commands:
 
+heroku config:add HOSTNAME=your.website.com
 heroku config:add CLIENT_ID=xxxx-your-key-blah
 heroku config:add CLIENT_SECRET=xxxx-your-secret-from-salesforce-remote-sites
 git push heroku master
