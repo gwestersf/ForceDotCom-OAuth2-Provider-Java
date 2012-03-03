@@ -19,3 +19,12 @@ https://login.salesforce.com/help/doc/en/remoteaccess_oauth_username_password_fl
 If you are looking to refresh an expired session:
 
 https://login.salesforce.com/help/doc/en/remoteaccess_oauth_refresh_token_flow.htm#request_access_token
+
+You can run the username and password flow from the class UsernamePasswordFlow as a J2SE application.  Simply provide the instance name, the consumer key (client id), and the consumer secret (client secret) to instantiate the class.  Then provide a username and password to get an access token, which serves as a session ID for any API reqeust to Salesforce.  To pass the access token to Salesforce and overcome an HTTP 401 Unauthorized message, set the HTTP header "Authorization: OAuth xxxxxxx-your-access-token-xxxxxxxx".
+
+You can run the callback flow from the class HerokuApp.java, which contains a main() method that lets you start the server from the command line.  The main method has an embedded web container from Jetty, so it is initiating its own HTTP server.  Specify an environment variable on your system called $PORT and you can configure which port the server will listen on.  You don't need to package this web app in a WAR and put it on Tomcat, Jboss, or your favorite web container like in a traditioanl web app, but you certainly could.  This server will run locally, and it is also 100% ready to deploy on Heroku.  There is a configuration file in the root of the project called Procfile that tells Heroku what to run.  For more information see:
+
+http://devcenter.heroku.com/articles/java
+
+The callback servlet is implemented in CallbackServlet.java.  This servlet accepts an HTTP POST initiated by Salesforce (a callout essentially) that tells your server what the session information is.  For illustrative purposes, the next HTTP get to the server will display that information.  You should not implement HTTP GET in a production web application with OAuth2. 
+

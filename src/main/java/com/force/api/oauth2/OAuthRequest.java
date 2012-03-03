@@ -1,8 +1,8 @@
 package com.force.api.oauth2;
 
-import org.apache.commons.httpclient.NameValuePair;
 
 /**
+ * Every OAuth2 request has a grant type and a client id (also known as consumer key).
  * 
  * @author gwester
  */

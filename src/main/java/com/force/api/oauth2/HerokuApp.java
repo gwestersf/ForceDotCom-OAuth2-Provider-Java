@@ -4,10 +4,19 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 /**
+ * This class contains an embedded web container that
+ * allows a web app to easily run on Heroku without
+ * being packaged as a war and then deployed on top 
+ * of Tomcat, JBoss, etc.  This is a great architecture
+ * that unifies the development, testing and production
+ * environments.
+ * 
+ * See also: http://www.12factor.net/
+ * See also: http://devcenter.heroku.com/articles/java
  * 
  * @author gwester
  */
-public class CallbackServer {
+public class HerokuApp {
 
 	public static void main(String[] args) throws Exception {
 		String webPort = System.getenv("PORT");

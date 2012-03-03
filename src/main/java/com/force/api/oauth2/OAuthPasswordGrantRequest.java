@@ -1,8 +1,8 @@
 package com.force.api.oauth2;
 
-import org.apache.commons.httpclient.NameValuePair;
 
 /**
+ * This is a class with the fields for the username and password flow.
  * 
  * @author gwester
  */
