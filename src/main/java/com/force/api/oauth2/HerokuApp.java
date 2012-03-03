@@ -4,6 +4,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.servlet.ServletMapping;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 /**
@@ -49,14 +53,11 @@ public class HerokuApp {
 		}
 
 		Server server = new Server(Integer.valueOf(port));
-		WebAppContext root = new WebAppContext();
-		root.setContextPath("/");
-		root.setDescriptor(WEB_XML_PATH);
-		root.setResourceBase(WEB_ROOT_PATH);
-		root.setParentLoaderPriority(true);
-
-		server.setHandler(root);
-		server.start();
-		server.join(); 
+        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        context.setContextPath("/");
+        server.setHandler(context);
+        context.addServlet(new ServletHolder(new CallbackServlet()),"/*");
+        server.start();
+        server.join();  
 	}
 }
