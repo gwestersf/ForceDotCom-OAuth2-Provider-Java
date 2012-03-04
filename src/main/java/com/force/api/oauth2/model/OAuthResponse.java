@@ -115,4 +115,12 @@ public class OAuthResponse {
 	protected void setRefreshToken(String refresh_token) {
 		this.refresh_token = refresh_token;
 	}
+
+	@Override
+	public String toString() {
+		return "OAuthResponse [id=" + id + ", access_token=" + access_token
+				+ ", refresh_token=" + refresh_token + ", instance_url="
+				+ instance_url + ", issued_at=" + issued_at + ", signature="
+				+ signature + "]";
+	}
 }

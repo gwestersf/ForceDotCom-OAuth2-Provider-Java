@@ -20,9 +20,9 @@ import com.google.gson.Gson;
  * 
  * @author gwester
  */
-public class UsernamePasswordFlowImpl implements UsernamePasswordFlow {
+public class UsernamePasswordFlowClient implements SessionInitializer {
 	
-	private final Logger logger = Logger.getLogger(UsernamePasswordFlowImpl.class.getName());
+	private final Logger logger = Logger.getLogger(UsernamePasswordFlowClient.class.getName());
 	
 	private final String consumerKey;
 	private final String consumerSecret;
@@ -38,7 +38,7 @@ public class UsernamePasswordFlowImpl implements UsernamePasswordFlow {
 	 * @param consumerKey this is sometimes called 'client id'
 	 * @param consumerSecret this is sometimes called 'client secret'
 	 */
-	public UsernamePasswordFlowImpl(String hostname, String consumerKey, String consumerSecret) {
+	public UsernamePasswordFlowClient(String hostname, String consumerKey, String consumerSecret) {
 		this.path = "https://" + hostname + "/services/oauth2/token";
 		this.consumerKey = consumerKey;
 		this.consumerSecret = consumerSecret;
@@ -87,5 +87,22 @@ public class UsernamePasswordFlowImpl implements UsernamePasswordFlow {
 			return "";
 		}
 		return responseBody;
+	}
+	
+	public static void main(String[] args) throws Exception {
+		String hostname = System.getenv("HOSTNAME");
+		String consumerKey = System.getenv("CLIENT_ID");
+		String consumerSecret = System.getenv("CLIENT_SECRET");
+		
+		if(hostname == null || consumerKey == null || consumerSecret == null) {
+			throw new IllegalArgumentException("Set env vars: HOSTNAME, CLIENT_ID, CLIENT_SECRET");
+		}
+		
+		if(args.length != 2) {
+			throw new IllegalArgumentException("Pass in: username, password");
+		}
+		
+		UsernamePasswordFlowClient client = new UsernamePasswordFlowClient(hostname, consumerKey, consumerSecret);
+		client.getSession(args[0], args[1]);
 	}
 }

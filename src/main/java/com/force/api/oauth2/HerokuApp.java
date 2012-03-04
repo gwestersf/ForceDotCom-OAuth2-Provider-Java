@@ -8,12 +8,11 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 /**
- * This class contains an embedded web container that
- * allows a web app to easily run on Heroku without
- * being packaged as a war and then deployed on top 
- * of Tomcat, JBoss, etc.  This is a great architecture
- * that unifies the development, testing and production
- * environments.
+ * This class contains an embedded web container that allows a web app to easily run on Heroku without
+ * being packaged as a war and then deployed on top of Tomcat, JBoss, etc.  This is a great architecture
+ * that unifies the development, testing and production environments.
+ * 
+ * Access this web server from your browser.
  * 
  * See also: http://www.12factor.net/
  * See also: http://devcenter.heroku.com/articles/java

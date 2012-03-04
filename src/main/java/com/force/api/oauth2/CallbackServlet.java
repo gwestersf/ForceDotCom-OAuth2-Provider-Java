@@ -39,11 +39,13 @@ public class CallbackServlet extends HttpServlet {
 	private final String URL_PARAM_CODE = "code";
 	private final String URL_PARAM_ACTION = "action";
 	
+	//NOTE: you must set these enviornment variables in your IDE's run configuration, and in the deployment env
 	private final String HOSTNAME = System.getenv("HOSTNAME"); 
 	private final String CLIENT_ID = System.getenv("CLIENT_ID");
 	private final String CLIENT_SECRET = System.getenv("CLIENT_SECRET");
 	
-	private final String HOSTNAME_URL = "https://" + HOSTNAME + "/";
+	
+	private final String CALLBACK_URL = "https://" + HOSTNAME + "/";
 	
 	private final String AUTHORIZATION_ENDPOINT = 
 			"https://login.salesforce.com/services/oauth2/authorize?" +
@@ -52,8 +54,9 @@ public class CallbackServlet extends HttpServlet {
 			//Your application's client identifier (consumer key in Remote Access Detail).
 			"&client_id=" + CLIENT_ID +
 			//This must match your application's configured callback URL in Salesforce > Setup > Remote Access
-			"&redirect_uri=" + HOSTNAME_URL;
+			"&redirect_uri=" + CALLBACK_URL;
 	
+	//this is how we ultimately get the session ID
 	private final String TOKEN_ENDPOINT = "https://login.salesforce.com/services/oauth2/token";
 	
 
@@ -73,7 +76,7 @@ public class CallbackServlet extends HttpServlet {
 			String action = request.getParameter(URL_PARAM_ACTION);
 			
 			if(code != null && (!code.isEmpty())) {
-				OAuthCallbackGrantRequest requestInfo = new OAuthCallbackGrantRequest(CLIENT_ID, CLIENT_SECRET, code, HOSTNAME_URL);
+				OAuthCallbackGrantRequest requestInfo = new OAuthCallbackGrantRequest(CLIENT_ID, CLIENT_SECRET, code, CALLBACK_URL);
 				
 				PostMethod methodExcecutedOnSalesforce = sendOAuthTokenRequest(requestInfo);
 				int statusCode = methodExcecutedOnSalesforce.getStatusCode();
@@ -121,17 +124,6 @@ public class CallbackServlet extends HttpServlet {
 			logger.log(Level.SEVERE, e.getLocalizedMessage());
 			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR_500);
 		}
-		
-		/*
-		String sessionId = SessionService.getInstance().getLastAddedSession().getAccess_token();
-		try {
-			response.getWriter().write(sessionId);
-			response.setStatus(HttpStatus.OK_200);
-		} catch (IOException e) {
-			logger.log(Level.SEVERE, e.getLocalizedMessage());
-			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR_500);
-		}
-		*/
 	}
 	
 	
