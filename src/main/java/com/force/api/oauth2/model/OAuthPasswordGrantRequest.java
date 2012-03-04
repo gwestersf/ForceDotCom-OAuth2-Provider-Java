@@ -1,4 +1,4 @@
-package com.force.api.oauth2;
+package com.force.api.oauth2.model;
 
 
 /**
@@ -25,10 +25,10 @@ public class OAuthPasswordGrantRequest extends OAuthRequest {
 	public String getGrantType() {
 		return grant_type;
 	}
-	protected String getUsername() {
+	public String getUsername() {
 		return username;
 	}
-	protected String getPassword() {
+	public String getPassword() {
 		return password;
 	}
 	

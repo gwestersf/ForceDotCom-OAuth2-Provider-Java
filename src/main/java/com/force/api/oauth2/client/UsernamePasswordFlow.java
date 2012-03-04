@@ -1,4 +1,6 @@
-package com.force.api.oauth2;
+package com.force.api.oauth2.client;
+
+import com.force.api.oauth2.model.OAuthResponse;
 
 /**
  * 

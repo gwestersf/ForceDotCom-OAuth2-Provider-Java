@@ -1,4 +1,4 @@
-package com.force.api.oauth2;
+package com.force.api.oauth2.model;
 
 /**
  * POJO used for deserializing JSON response from Authorization server.

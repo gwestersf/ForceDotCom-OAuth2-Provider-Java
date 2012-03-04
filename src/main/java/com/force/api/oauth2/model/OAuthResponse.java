@@ -1,4 +1,4 @@
-package com.force.api.oauth2;
+package com.force.api.oauth2.model;
 
 import java.net.MalformedURLException;
 import java.util.Date;

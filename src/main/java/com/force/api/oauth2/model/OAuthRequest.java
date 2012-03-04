@@ -1,4 +1,4 @@
-package com.force.api.oauth2;
+package com.force.api.oauth2.model;
 
 
 /**
@@ -25,7 +25,7 @@ public abstract class OAuthRequest {
 	 * NOTE: never distribute a client secret with client (mobile or desktop) software!
 	 * @return
 	 */
-	protected String getConsumerSecret() {
+	public String getConsumerSecret() {
 		return client_secret;
 	}
 	

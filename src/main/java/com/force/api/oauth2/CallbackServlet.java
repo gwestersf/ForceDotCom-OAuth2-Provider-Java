@@ -16,6 +16,10 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.http.HttpStatus;
 
+import com.force.api.oauth2.model.OAuthCallbackGrantRequest;
+import com.force.api.oauth2.model.OAuthResponse;
+import com.force.api.oauth2.model.UserInformation;
+import com.force.api.oauth2.persistence.SingleNodeSessionService;
 import com.google.gson.Gson;
 
 
@@ -87,7 +91,7 @@ public class CallbackServlet extends HttpServlet {
 				OAuthResponse authInfo = gson.fromJson(responseBody, OAuthResponse.class);
 				
 				//set a cookie so we can lookup the authorization code the next time this user comes back
-				String cookieValue = SessionService.getInstance().addSessionAndGetNewCookie(authInfo);
+				String cookieValue = SingleNodeSessionService.getInstance().addSessionAndGetNewCookie(authInfo);
 				response.addCookie(new Cookie("sid", cookieValue));
 				
 				response.getWriter().write(getUserInformation(authInfo).toString());
@@ -106,7 +110,7 @@ public class CallbackServlet extends HttpServlet {
 						response.sendError(HttpStatus.UNAUTHORIZED_401);
 					} 
 					else { //authorized
-						OAuthResponse authInfo = SessionService.getInstance().getAuthorizationInfo(cookieValue);
+						OAuthResponse authInfo = SingleNodeSessionService.getInstance().getAuthorizationInfo(cookieValue);
 						response.getWriter().write(getUserInformation(authInfo).toString());
 					}
 				}

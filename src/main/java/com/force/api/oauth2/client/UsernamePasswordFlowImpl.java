@@ -1,4 +1,4 @@
-package com.force.api.oauth2;
+package com.force.api.oauth2.client;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -9,6 +9,8 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.io.IOUtils;
 
+import com.force.api.oauth2.model.OAuthPasswordGrantRequest;
+import com.force.api.oauth2.model.OAuthResponse;
 import com.google.gson.Gson;
 
 /**
