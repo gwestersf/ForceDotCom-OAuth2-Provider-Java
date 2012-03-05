@@ -8,7 +8,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 /**
- * This class contains an embedded web container that allows a web app to easily run on Heroku without
+ * This class contains an embedded web container that allows a web app to easily run on any server without
  * being packaged as a war and then deployed on top of Tomcat, JBoss, etc.  This is a great architecture
  * that unifies the development, testing and production environments.
  * 
@@ -19,9 +19,9 @@ import org.eclipse.jetty.servlet.ServletHolder;
  * 
  * @author gwester
  */
-public class HerokuApp {
+public class WebAppEmbedded {
 	
-	private static final Logger logger = Logger.getLogger(HerokuApp.class.getName());
+	private static final Logger logger = Logger.getLogger(WebAppEmbedded.class.getName());
 	
 	public static void main(String[] args) throws Exception {
 		//set port
